@@ -1,0 +1,94 @@
+[
+  {
+    "name": "Felipe",
+    "id": "1020",
+    "products": [
+      {
+        "productId": 12344,
+        "productName": "gaseosa",
+        "price": 1233.0,
+        "description": "gaseosas importadas"
+      },
+      {
+        "productId": 123123,
+        "productName": "cualquier",
+        "price": 123123.0,
+        "description": "asdads"
+      }
+    ],
+    "nameCompany": "CRISTAL",
+    "address": "calle 6b",
+    "phoneNumber": "320838888",
+    "email": "felipe@gmail.com"
+  },
+  {
+    "name": "David",
+    "id": "100",
+    "products": [
+      {
+        "productId": 9994,
+        "productName": "Cerveza",
+        "price": 10200.0,
+        "description": "Cerveza Azul"
+      }
+    ],
+    "nameCompany": "SPRITE",
+    "address": "calle 5b",
+    "phoneNumber": "320837999",
+    "email": "david@gmail.com"
+  },
+  {
+    "name": "Carlos",
+    "id": "12",
+    "products": [
+      {
+        "productId": 893,
+        "productName": "lapizes",
+        "price": 100.0,
+        "description": "lapizes morados"
+      }
+    ],
+    "nameCompany": "BRETAÑA",
+    "address": "calle 7b",
+    "phoneNumber": "324234333",
+    "email": "carlos@gmail.com"
+  },
+  {
+    "name": "Pablo",
+    "id": "1",
+    "products": [
+      {
+        "productId": 892,
+        "productName": "papas",
+        "price": 10000.0,
+        "description": "papas criollas"
+      },
+      {
+        "productId": 22,
+        "productName": "Zanahorias",
+        "price": 2333.0,
+        "description": "Zanahorias de colores"
+      }
+    ],
+    "nameCompany": "PEPSI",
+    "address": "calle 4b",
+    "phoneNumber": "320837874",
+    "email": "pablo@gmail.com"
+  },
+  {
+    "name": "asd",
+    "id": "123",
+    "products": [
+      {
+        "productId": 123,
+        "productName": "123",
+        "price": 123.0,
+        "description": "123"
+      }
+    ],
+    "nameCompany": "asd",
+    "address": "asd",
+    "phoneNumber": "123",
+    "email": "asdasd@gmail.c"
+  }
+]
