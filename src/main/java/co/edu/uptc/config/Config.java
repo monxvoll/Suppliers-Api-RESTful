@@ -13,12 +13,6 @@ import java.util.Properties;
 	private String nameFileSeri;
 	private String nameFileCSV;
 
-
-		//Constructor de la clase
-		/**
-		 * Carga la configuracion de la aplicacion desde un archivo properties ubicado en "resources/conf/appconfig.properties".
-		 * Y lee las propiedades relacionadas con los nombres y rutas de los archivos utilizados por la aplicación.
-		 */
 	private Config() {
 		this.propiedades= new Properties();
 		try (FileInputStream entrada = new FileInputStream("C:/Users/skson/IdeaProjects/Supplier/resources/conf/appconfig.properties")) {
@@ -35,9 +29,6 @@ import java.util.Properties;
 	}
 
 
-
-
-	//Metodo que devuelve una instanacia de la clase actual
 	public static Config getInstance() {
 		if (config==null) {
 			config= new Config();
@@ -45,7 +36,6 @@ import java.util.Properties;
 		return config;
 	}
 
-	//Getters y Setters
 	public String getPath() {
 	return path;
 }

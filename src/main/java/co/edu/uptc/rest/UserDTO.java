@@ -1,11 +1,8 @@
 package co.edu.uptc.rest;
 
-import co.edu.uptc.enums.ETypeFile;
-import co.edu.uptc.model.Supplier;
+
 import co.edu.uptc.model.User;
 import co.edu.uptc.persistence.ManagementSupplier;
-
-import javax.servlet.annotation.WebFilter;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -48,8 +45,13 @@ public class UserDTO {
             managementSupplier.loadFileJSONUser();
         }
         User user = findByName(name);
-        System.out.println(user.getUserName());
-        System.out.println(user.getUserPassword());
+
+        if(isNullOrEmpty(name)){
+            return Response.status(Response.Status.OK).entity("Null").build();
+        }
+        if(isNullOrEmpty(password)){
+            return Response.status(Response.Status.OK).entity("Null").build();
+        }
 
         if((user!=null)&&(user.getUserPassword().equals(password))){
             return Response.status(Response.Status.OK).entity("True").build();
@@ -100,13 +102,9 @@ public class UserDTO {
     @DELETE
     @Path("/deleteUser")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteSupplier(@QueryParam("name") String name) {
-        if (isNullOrEmpty(name)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Debe especificar un nombre").build();
-        }
-
-        if (isNullOrEmpty(name)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Digite un nombre válido").build();
+    public Response deleteSupplier(@QueryParam("name") String name,@QueryParam("password") String password) {
+        if (isNullOrEmpty(name)||isNullOrEmpty(password)) {
+            return Response.status(Response.Status.OK).entity("Null").build();
         }
 
         synchronized (managementSupplier) {
@@ -115,16 +113,19 @@ public class UserDTO {
 
             User existingUser = findByName(name);
             if (existingUser == null) {
-                return Response.status(Response.Status.NOT_FOUND).entity("El proveedor con nombre " + name + " no existe").build();
+                return Response.status(Response.Status.OK).entity("Inex").build();
             }
 
+            if(!existingUser.getUserPassword().equals(password)){
+                return Response.status(Response.Status.OK).entity("False").build();
+            }
             managementSupplier.getUserList().remove(existingUser);
             managementSupplier.dumpFileJSONUser();
             managementSupplier.getUserList().clear();
             managementSupplier.loadFileJSONUser();
         }
 
-        return Response.ok("Usuario eliminado con éxito").build();
+        return Response.status(Response.Status.OK).entity("True").build();
     }
 
 

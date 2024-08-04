@@ -10,7 +10,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import co.edu.uptc.interfaces.IActionsFile;
 import co.edu.uptc.model.Supplier;
 import co.edu.uptc.model.Product;
 import co.edu.uptc.model.User;
@@ -24,7 +23,7 @@ import org.w3c.dom.NodeList;
 import co.edu.uptc.constants.CommonConstants;
 import co.edu.uptc.enums.ETypeFile;
 
-public class ManagementSupplier extends FilePlain implements IActionsFile {
+public class ManagementSupplier extends FilePlain  {
 
 	private static ManagementSupplier instance;
 	private List<Supplier> ListSupplier;

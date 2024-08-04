@@ -1,9 +1,6 @@
 
 package co.edu.uptc.model;
 
-
-
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -47,7 +44,7 @@ public class Supplier implements Serializable {
     }
 
 
-    // Getters and Setters
+
     public String getName() {
         return name;
     }

@@ -1,0 +1,29 @@
+[{
+  "id" :"123",
+  "name": "John Doe",
+  "nameCompany": "Doe Enterprises",
+  "address": "123 Main St, Springfield",
+  "phoneNumber": "1234567890",
+  "email": "johndoe@example.com",
+  "products": [
+    {
+      "productId": 12,
+      "productName": "Product 1",
+      "price": 10.0,
+      "description": "aaaa"
+    },
+    {
+      "productId": 13,
+      "productName": "Product 2",
+      "price": 20.0,
+      "description": "aaaa"
+    }
+  ]
+}]
+
+
+formato usuario
+[{
+ "userName" : "juan",
+ "userPassword" : "123123"
+}]
