@@ -238,6 +238,7 @@ public class SupplierDTO {
 
             Product existingProduct = findProductById(existingSupplier, updatedProduct.getProductId());
             if (existingProduct == null) {
+                System.out.println(existingProduct);
                 return Response.ok("InexProduct").build();
             }
 
@@ -277,7 +278,7 @@ public class SupplierDTO {
      */
     private Product findProductById(Supplier supplier, Integer productId) {
         for (Product product : supplier.getProducts()) {
-            if (product.getProductId() == productId) {
+            if (product.getProductId().equals(productId)) {
                 return product;
             }
         }

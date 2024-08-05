@@ -356,9 +356,8 @@ public class ManagementSupplier extends FilePlain {
 		try (FileOutputStream fileOut = new FileOutputStream(rutaArchivo);
 			 ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
 			out.writeObject(this.ListSupplier);
-			System.out.println("Proveedores serializados correctamente en: " + rutaArchivo);
-		} catch (IOException i) {
-			i.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -401,19 +400,25 @@ public class ManagementSupplier extends FilePlain {
 		String rutaArchivo = "C:/Users/skson/IdeaProjects/Supplier/resources/data/supplier.ser";
 		File file = new File(rutaArchivo);
 
-		// Verifica que el archivo no esté vacío
+		// Verifica que el archivo no esté vacío y que exista
+		if (!file.exists()) {
+			System.err.println("El archivo no existe: " + rutaArchivo);
+			return;
+		}
+
 		if (file.length() == 0) {
 			System.err.println("El archivo está vacío, no se encontraron proveedores.");
 			return;
-		} else {
-			System.out.println("Información cargada correctamente desde: " + rutaArchivo);
 		}
 
 		try (FileInputStream fileIn = new FileInputStream(file);
 			 ObjectInputStream in = new ObjectInputStream(fileIn)) {
 			List<Supplier> suppliers = (List<Supplier>) in.readObject();
-			if (suppliers != null) {
+			if (suppliers != null && !suppliers.isEmpty()) {
 				this.ListSupplier.addAll(suppliers);
+				System.out.println("Información cargada correctamente desde: " + rutaArchivo);
+			} else {
+				System.err.println("No se encontraron proveedores en el archivo.");
 			}
 		} catch (FileNotFoundException e) {
 			System.err.println("Archivo no encontrado: " + e.getMessage());
