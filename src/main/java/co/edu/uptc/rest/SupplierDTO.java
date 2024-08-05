@@ -12,15 +12,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Clase que proporciona los servicios REST para la gestión de proveedores y productos.
+ * Permite agregar, actualizar, eliminar y obtener proveedores y productos.
+ * Utiliza el objeto {@link ManagementSupplier} para manejar los datos de los proveedores.
+ *
+ * @author @monx.voll
+ */
 @Path("/ManagementSupplier")
 public class SupplierDTO {
 
-    private ManagementSupplier managementSupplier;
+    private final ManagementSupplier managementSupplier;
 
+    /**
+     * Constructor que inicializa la instancia de {@link ManagementSupplier}.
+     */
     public SupplierDTO() {
         managementSupplier = ManagementSupplier.getInstance();
     }
 
+    /**
+     * Añade un nuevo proveedor.
+     *
+     * @param supplier Objeto {@link Supplier} que representa al proveedor a añadir.
+     * @param fileType Tipo de archivo a utilizar para almacenar la información del proveedor.
+     * @return Respuesta HTTP con el resultado de la operación.
+     */
     @POST
     @Path("/addSupplier")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -50,14 +67,15 @@ public class SupplierDTO {
         } catch (IllegalArgumentException e) {
             return Response.ok("InvalidFile").build();
         }
-        synchronized (managementSupplier) {
 
+        synchronized (managementSupplier) {
             managementSupplier.loadSupplier(type);
         }
 
         if (findById(supplier.getId()) != null) {
             return Response.ok("Existence").build();
         }
+
         Supplier newSupplier = new Supplier(supplier.getName(), supplier.getId(), new ArrayList<>(), supplier.getNameCompany(), supplier.getAddress(), supplier.getPhoneNumber(), supplier.getEmail());
         synchronized (managementSupplier) {
             managementSupplier.getListSupplier().add(newSupplier);
@@ -68,6 +86,12 @@ public class SupplierDTO {
         return Response.ok("True").build();
     }
 
+    /**
+     * Obtiene la lista de proveedores.
+     *
+     * @param fileType Tipo de archivo desde el cual se cargarán los proveedores.
+     * @return Respuesta HTTP con la lista de proveedores o un mensaje de error.
+     */
     @GET
     @Path("/getSuppliers")
     @Produces(MediaType.APPLICATION_JSON)
@@ -83,7 +107,6 @@ public class SupplierDTO {
             return Response.status(Response.Status.BAD_REQUEST).entity("Tipo de archivo no válido").build();
         }
 
-
         synchronized (managementSupplier) {
             managementSupplier.getListSupplier().clear();
             managementSupplier.loadSupplier(type);
@@ -97,6 +120,13 @@ public class SupplierDTO {
         return Response.ok(suppliers).build();
     }
 
+    /**
+     * Actualiza la información de un proveedor existente.
+     *
+     * @param supplier Objeto {@link Supplier} con la información actualizada.
+     * @param fileType Tipo de archivo a utilizar para almacenar la información del proveedor.
+     * @return Respuesta HTTP con el resultado de la operación.
+     */
     @PUT
     @Path("/updateSupplier")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -117,7 +147,6 @@ public class SupplierDTO {
         } catch (IllegalArgumentException e) {
             return Response.ok("invalidType").build();
         }
-
 
         if (isNullOrEmpty(supplier.getEmail()) &&
                 isNullOrEmpty(supplier.getAddress()) &&
@@ -166,12 +195,19 @@ public class SupplierDTO {
         return Response.ok("True").build();
     }
 
+    /**
+     * Actualiza un producto en el proveedor especificado.
+     *
+     * @param supplierId ID del proveedor al que pertenece el producto.
+     * @param updatedProduct Objeto {@link Product} con la información actualizada del producto.
+     * @param fileType Tipo de archivo a utilizar para almacenar la información del proveedor.
+     * @return Respuesta HTTP con el resultado de la operación.
+     */
     @PUT
     @Path("/updateProduct")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateProduct(@QueryParam("supplierId") String supplierId, Product updatedProduct, @QueryParam("fileType") String fileType) {
-
         if (Objects.isNull(updatedProduct.getProductId())) {
             return Response.ok("NullId").build();
         }
@@ -229,10 +265,16 @@ public class SupplierDTO {
             managementSupplier.dumpFile(type);
             managementSupplier.loadSupplier(type);
         }
-
         return Response.ok("True").build();
     }
 
+    /**
+     * Busca un producto por su ID dentro de un proveedor.
+     *
+     * @param supplier Objeto {@link Supplier} que contiene los productos.
+     * @param productId ID del producto a buscar.
+     * @return El producto encontrado o null si no se encuentra.
+     */
     private Product findProductById(Supplier supplier, Integer productId) {
         for (Product product : supplier.getProducts()) {
             if (product.getProductId() == productId) {
@@ -242,6 +284,13 @@ public class SupplierDTO {
         return null;
     }
 
+    /**
+     * Elimina un proveedor por su ID.
+     *
+     * @param id ID del proveedor a eliminar.
+     * @param fileType Tipo de archivo a utilizar para almacenar la información actualizada.
+     * @return Respuesta HTTP con el resultado de la operación.
+     */
     @DELETE
     @Path("/deleteSupplier")
     @Produces(MediaType.APPLICATION_JSON)
@@ -252,6 +301,7 @@ public class SupplierDTO {
         if (isNullOrEmpty(id)) {
             return Response.ok("Null").build();
         }
+
         ETypeFile type;
         try {
             type = ETypeFile.valueOf(fileType.toUpperCase());
@@ -277,6 +327,14 @@ public class SupplierDTO {
         return Response.ok("True").build();
     }
 
+    /**
+     * Elimina un producto de un proveedor específico.
+     *
+     * @param productId ID del producto a eliminar.
+     * @param supplierId ID del proveedor al que pertenece el producto.
+     * @param fileType Tipo de archivo a utilizar para almacenar la información actualizada.
+     * @return Respuesta HTTP con el resultado de la operación.
+     */
     @DELETE
     @Path("/deleteProduct")
     @Produces(MediaType.APPLICATION_JSON)
@@ -325,6 +383,14 @@ public class SupplierDTO {
         }
     }
 
+    /**
+     * Añade un producto a un proveedor.
+     *
+     * @param supplierId ID del proveedor al que se añadirá el producto.
+     * @param updatedProduct Objeto {@link Product} que representa el producto a añadir.
+     * @param fileType Tipo de archivo a utilizar para almacenar la información actualizada.
+     * @return Respuesta HTTP con el resultado de la operación.
+     */
     @POST
     @Path("/addProductToSupplier")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -388,14 +454,19 @@ public class SupplierDTO {
         return Response.status(Response.Status.CREATED).entity("True").build();
     }
 
-
+    /**
+     * Obtiene productos por el ID del proveedor.
+     *
+     * @param id ID del proveedor cuyo productos se desean obtener.
+     * @param fileType Tipo de archivo desde el cual se cargarán los proveedores.
+     * @return Respuesta HTTP con la lista de productos o un mensaje de error.
+     */
     @GET
     @Path("/getProductById")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getProductsByCode(@QueryParam("id") String id, @QueryParam("fileType") ETypeFile fileType) {
         synchronized (managementSupplier) {
             managementSupplier.loadSupplier(fileType);
-
 
             if (managementSupplier.getListSupplier().isEmpty()) {
                 return Response.status(Response.Status.OK).entity(new ArrayList<>()).build();
@@ -410,27 +481,47 @@ public class SupplierDTO {
         }
     }
 
-    private Supplier findById(String id) {
-        synchronized (managementSupplier) {
-            for (Supplier supplier : managementSupplier.getListSupplier()) {
-                if (supplier.getId().equals(id)) {
-                    return supplier;
-                }
-            }
-        }
-        return null;
-    }
-
+    /**
+     * Verifica si un campo es nulo o vacío.
+     *
+     * @param field Campo a verificar.
+     * @return true si el campo es nulo o vacío, false en caso contrario.
+     */
     private boolean isNullOrEmpty(String field) {
         return field == null || field.isEmpty();
     }
 
+    /**
+     * Verifica si un número de teléfono es válido.
+     *
+     * @param phoneNumber Número de teléfono a verificar.
+     * @return true si el número de teléfono es válido, false en caso contrario.
+     */
     private boolean isPhoneNumberValid(String phoneNumber) {
         return phoneNumber != null && phoneNumber.matches("\\d{10}");
     }
 
+    /**
+     * Verifica si una dirección de correo electrónico es válida.
+     *
+     * @param email Dirección de correo electrónico a verificar.
+     * @return true si la dirección de correo electrónico es válida, false en caso contrario.
+     */
     private boolean isValidEmail(String email) {
         return email != null && email.matches("^[\\w-]+(\\.[\\w-]+)*@[\\w-]+(\\.[\\w-]+)+$");
     }
-
+    /**
+     * Busca un proveedor por su ID.
+     *
+     * @param id ID del proveedor a buscar.
+     * @return El proveedor encontrado o null si no se encuentra.
+     */
+    private Supplier findById(String id) {
+        for (Supplier supplier : managementSupplier.getListSupplier()) {
+            if (supplier.getId().equals(id)) {
+                return supplier;
+            }
+        }
+        return null;
+    }
 }

@@ -1,20 +1,57 @@
-
 package co.edu.uptc.model;
 
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Clase que representa un proveedor.
+ * Implementa Serializable para permitir la serialización del objeto.
+ *
+ * @author @monx.voll
+ */
 public class Supplier implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private String name;
-    private String id;
-    private List<Product> products;
-    private String nameCompany;
-    private String address;
-    private String phoneNumber;
-    private String email;
+    private static final long serialVersionUID = 1L; // Identificador de versión para la serialización
+    private String name; // Nombre del proveedor
+    private String id; // Identificador del proveedor
+    private List<Product> products; // Lista de productos ofrecidos por el proveedor
+    private String nameCompany; // Nombre de la empresa del proveedor
+    private String address; // Dirección del proveedor
+    private String phoneNumber; // Número de teléfono del proveedor
+    private String email; // Correo electrónico del proveedor
 
+    /**
+     * Constructor por defecto.
+     */
+    public Supplier() {
+    }
+
+    /**
+     * Constructor con parámetros para inicializar todos los atributos.
+     *
+     * @param name Nombre del proveedor
+     * @param id Identificador del proveedor
+     * @param products Lista de productos ofrecidos por el proveedor
+     * @param nameCompany Nombre de la empresa del proveedor
+     * @param address Dirección del proveedor
+     * @param phoneNumber Número de teléfono del proveedor
+     * @param email Correo electrónico del proveedor
+     */
+    public Supplier(String name, String id, List<Product> products, String nameCompany, String address, String phoneNumber, String email) {
+        this.name = name;
+        this.id = id;
+        this.products = products;
+        this.nameCompany = nameCompany;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
+
+    /**
+     * Representación en cadena del objeto Supplier.
+     *
+     * @return Cadena que representa el proveedor
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -30,20 +67,7 @@ public class Supplier implements Serializable {
         return sb.toString();
     }
 
-    public Supplier(){
-
-    }
-    public Supplier(String name, String id, List<Product> products, String nameCompany, String address, String phoneNumber, String email) {
-        this.name = name;
-        this.id = id;
-        this.products = products;
-        this.nameCompany = nameCompany;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-    }
-
-
+    // Métodos getter y setter
 
     public String getName() {
         return name;

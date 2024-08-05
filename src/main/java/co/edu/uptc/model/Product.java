@@ -1,19 +1,35 @@
 package co.edu.uptc.model;
 
 import java.io.Serializable;
-import java.net.ProxySelector;
 
+/**
+ * Clase que representa un producto.
+ * Implementa Serializable para permitir la serialización del objeto.
+ *
+ * @author @monx.voll
+ */
 public class Product implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private Integer productId;
-    private String productName;
-    private Double price;
-    private String description;
+    private static final long serialVersionUID = 1L; // Identificador de versión para la serialización
+    private Integer productId; // Identificador único del producto
+    private String productName; // Nombre del producto
+    private Double price; // Precio del producto
+    private String description; // Descripción del producto
 
-    public Product(){
-
+    /**
+     * Constructor por defecto.
+     */
+    public Product() {
     }
+
+    /**
+     * Constructor con parámetros para inicializar todos los atributos.
+     *
+     * @param productId Identificador único del producto
+     * @param productName Nombre del producto
+     * @param price Precio del producto
+     * @param description Descripción del producto
+     */
     public Product(Integer productId, String productName, Double price, String description) {
         this.productId = productId;
         this.productName = productName;
@@ -21,6 +37,11 @@ public class Product implements Serializable {
         this.description = description;
     }
 
+    /**
+     * Representación en cadena del objeto Product.
+     *
+     * @return Cadena que representa el producto
+     */
     @Override
     public String toString() {
         return "Product{" +
@@ -31,8 +52,7 @@ public class Product implements Serializable {
                 '}';
     }
 
-    // Getters and Setters
-
+    // Métodos getter y setter
 
     public Integer getProductId() {
         return productId;

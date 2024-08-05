@@ -5,7 +5,6 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -23,17 +22,31 @@ import org.w3c.dom.NodeList;
 import co.edu.uptc.constants.CommonConstants;
 import co.edu.uptc.enums.ETypeFile;
 
-public class ManagementSupplier extends FilePlain  {
+/**
+ * Clase que maneja la persistencia de datos de proveedores y usuarios.
+ * Soporta múltiples formatos de archivo: XML, JSON, CSV, TXT y objetos serializados.
+ *
+ * @author @monx.voll
+ */
+public class ManagementSupplier extends FilePlain {
 
 	private static ManagementSupplier instance;
 	private List<Supplier> ListSupplier;
 	private List<User> userList;
 
+	/**
+	 * Constructor que inicializa las listas de proveedores y usuarios.
+	 */
 	public ManagementSupplier() {
 		this.ListSupplier = new ArrayList<>();
 		this.userList = new ArrayList<>();
 	}
 
+	/**
+	 * Obtiene la instancia única de ManagementSupplier (Singleton).
+	 *
+	 * @return Instancia de ManagementSupplier
+	 */
 	public static synchronized ManagementSupplier getInstance() {
 		if (instance == null) {
 			instance = new ManagementSupplier();
@@ -41,12 +54,17 @@ public class ManagementSupplier extends FilePlain  {
 		return instance;
 	}
 
+	/**
+	 * Guarda los datos de proveedores en el formato especificado.
+	 *
+	 * @param eTypeFile Tipo de archivo para guardar los datos
+	 */
 	public void dumpFile(ETypeFile eTypeFile) {
 		switch (eTypeFile) {
 			case XML:
 				this.dumpFileXML();
 				break;
-			case PLAIN:
+			case TXT:
 				this.dumpFilePlain(confValue.getPath().concat(confValue.getNameFileTXT()));
 				break;
 			case JSON:
@@ -61,10 +79,15 @@ public class ManagementSupplier extends FilePlain  {
 		}
 	}
 
+	/**
+	 * Carga los datos de proveedores desde el formato especificado.
+	 *
+	 * @param eTypeFile Tipo de archivo para cargar los datos
+	 */
 	public void loadSupplier(ETypeFile eTypeFile) {
 		getListSupplier().clear();
 		switch (eTypeFile) {
-			case PLAIN:
+			case TXT:
 				this.loadFilePlain("C:/Users/skson/IdeaProjects/Supplier/resources/data/supplier.txt");
 				break;
 			case XML:
@@ -82,7 +105,11 @@ public class ManagementSupplier extends FilePlain  {
 		}
 	}
 
-
+	/**
+	 * Guarda los datos de proveedores en un archivo de texto plano.
+	 *
+	 * @param filePath Ruta y nombre del archivo
+	 */
 	public void dumpFilePlain(String filePath) {
 		List<String> records = new ArrayList<>();
 		for (Supplier supplier : ListSupplier) {
@@ -104,8 +131,11 @@ public class ManagementSupplier extends FilePlain  {
 		this.writer(filePath, records);
 	}
 
-
-
+	/**
+	 * Carga los datos de proveedores desde un archivo de texto plano.
+	 *
+	 * @param path Ruta del archivo
+	 */
 	public void loadFilePlain(String path) {
 		File file = new File(path);
 
@@ -171,10 +201,9 @@ public class ManagementSupplier extends FilePlain  {
 		}
 	}
 
-
-
-
-
+	/**
+	 * Guarda los datos de proveedores en un archivo XML.
+	 */
 	public void dumpFileXML() {
 		String rutaArchivo = confValue.getPath().concat(confValue.getNameFileXML());
 		StringBuilder lines = new StringBuilder();
@@ -203,7 +232,11 @@ public class ManagementSupplier extends FilePlain  {
 		this.writeFile(rutaArchivo, lines.toString());
 	}
 
-
+	/**
+	 * Carga los datos de proveedores desde un archivo XML.
+	 *
+	 * @param filePath Ruta del archivo XML
+	 */
 	public void loadFileXML(String filePath) {
 		try {
 			File file = new File(filePath);
@@ -269,7 +302,13 @@ public class ManagementSupplier extends FilePlain  {
 		}
 	}
 
-
+	/**
+	 * Obtiene el contenido de texto de un elemento XML dado un nombre de etiqueta.
+	 *
+	 * @param element Elemento XML
+	 * @param tagName Nombre de la etiqueta
+	 * @return Contenido de texto del elemento
+	 */
 	private String getTextContent(Element element, String tagName) {
 		NodeList nodeList = element.getElementsByTagName(tagName);
 		if (nodeList.getLength() > 0) {
@@ -278,21 +317,20 @@ public class ManagementSupplier extends FilePlain  {
 		return "";
 	}
 
-
+	/**
+	 * Guarda los datos de proveedores en un archivo JSON.
+	 */
 	public void dumpFileJSON() {
-
 		String rutaArchivo = confValue.getPath() + confValue.getNameFileJSON();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
 		String jsonString = gson.toJson(this.ListSupplier) + System.lineSeparator();
+		writeFile(rutaArchivo, jsonString);
+		System.out.println("Archivo JSON guardado correctamente.");
+	}
 
-        writeFile(rutaArchivo, jsonString);
-        System.out.println("Archivo JSON guardado correctamente.");
-    }
-
-
-
-
+	/**
+	 * Carga los datos de proveedores desde un archivo JSON.
+	 */
 	public void loadFileJSON() {
 		String fileName = "C:/Users/skson/IdeaProjects/Supplier/resources/data/supplier.json";
 		try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName))) {
@@ -310,7 +348,9 @@ public class ManagementSupplier extends FilePlain  {
 		}
 	}
 
-
+	/**
+	 * Guarda los datos de proveedores en un archivo serializado.
+	 */
 	public void dumpFileSeralizate() {
 		String rutaArchivo = "C:/Users/skson/IdeaProjects/Supplier/resources/data/supplier.ser";
 		try (FileOutputStream fileOut = new FileOutputStream(rutaArchivo);
@@ -322,18 +362,20 @@ public class ManagementSupplier extends FilePlain  {
 		}
 	}
 
+	/**
+	 * Guarda los datos de usuarios en un archivo JSON.
+	 */
 	public void dumpFileJSONUser() {
-
 		String rutaArchivo = "resources/data/login/user.json";
-
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
 		String jsonString = gson.toJson(this.userList) + System.lineSeparator();
-
 		writeFile(rutaArchivo, jsonString);
 		System.out.println("Archivo JSON guardado correctamente.");
 	}
 
+	/**
+	 * Carga los datos de usuarios desde un archivo JSON.
+	 */
 	public void loadFileJSONUser() {
 		getUserList().clear();
 		String fileName = "C:/Users/skson/IdeaProjects/Supplier/resources/data/login/user.json";
@@ -352,6 +394,9 @@ public class ManagementSupplier extends FilePlain  {
 		}
 	}
 
+	/**
+	 * Carga los datos de proveedores desde un archivo serializado.
+	 */
 	public void loadFileSerializate() {
 		String rutaArchivo = "C:/Users/skson/IdeaProjects/Supplier/resources/data/supplier.ser";
 		File file = new File(rutaArchivo);
@@ -363,7 +408,6 @@ public class ManagementSupplier extends FilePlain  {
 		} else {
 			System.out.println("Información cargada correctamente desde: " + rutaArchivo);
 		}
-
 
 		try (FileInputStream fileIn = new FileInputStream(file);
 			 ObjectInputStream in = new ObjectInputStream(fileIn)) {
@@ -380,10 +424,20 @@ public class ManagementSupplier extends FilePlain  {
 		}
 	}
 
+	/**
+	 * Obtiene la lista de proveedores.
+	 *
+	 * @return Lista de proveedores
+	 */
 	public List<Supplier> getListSupplier() {
 		return ListSupplier;
 	}
 
+	/**
+	 * Obtiene la lista de usuarios.
+	 *
+	 * @return Lista de usuarios
+	 */
 	public List<User> getUserList() {
 		return userList;
 	}
