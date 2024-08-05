@@ -6,15 +6,15 @@ import java.net.ProxySelector;
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private int productId;
+    private Integer productId;
     private String productName;
-    private double price;
+    private Double price;
     private String description;
 
     public Product(){
 
     }
-    public Product(int productId, String productName, double price, String description) {
+    public Product(Integer productId, String productName, Double price, String description) {
         this.productId = productId;
         this.productName = productName;
         this.price = price;
@@ -32,11 +32,13 @@ public class Product implements Serializable {
     }
 
     // Getters and Setters
-    public int getProductId() {
+
+
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
@@ -48,11 +50,11 @@ public class Product implements Serializable {
         this.productName = productName;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

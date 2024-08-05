@@ -145,9 +145,9 @@ public class ManagementSupplier extends FilePlain  {
 								String[] productDetails = product.split(",");
 								if (productDetails.length == 4) {
 									try {
-										int productId = Integer.parseInt(productDetails[0].trim());
+										Integer productId = Integer.valueOf(productDetails[0].trim());
 										String productName = productDetails[1].trim();
-										double productPrice = Double.parseDouble(productDetails[2].trim());
+										Double productPrice = Double.parseDouble(productDetails[2].trim());
 										String productDescription = productDetails[3].trim();
 										supplier.getProducts().add(new Product(productId, productName, productPrice, productDescription));
 									} catch (NumberFormatException e) {
@@ -247,9 +247,9 @@ public class ManagementSupplier extends FilePlain  {
 						if (productNode.getNodeType() == Node.ELEMENT_NODE) {
 							Element productElement = (Element) productNode;
 
-							int productId = Integer.parseInt(getTextContent(productElement, "productId"));
+							Integer productId = Integer.parseInt(getTextContent(productElement, "productId"));
 							String productName = getTextContent(productElement, "productName");
-							double price = Double.parseDouble(getTextContent(productElement, "price"));
+							Double price = Double.parseDouble(getTextContent(productElement, "price"));
 							String description = getTextContent(productElement, "description");
 
 							products.add(new Product(productId, productName, price, description));
@@ -269,7 +269,7 @@ public class ManagementSupplier extends FilePlain  {
 		}
 	}
 
-	// Método auxiliar para obtener el contenido de texto de un elemento
+
 	private String getTextContent(Element element, String tagName) {
 		NodeList nodeList = element.getElementsByTagName(tagName);
 		if (nodeList.getLength() > 0) {
