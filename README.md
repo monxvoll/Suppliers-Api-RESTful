@@ -67,4 +67,4 @@ Enumeración que define los tipos de archivo soportados en la aplicación.
 
 1. Clona el repositorio:
    ```bash
-   git clone <URL del repositorio>
+   git clone https://github.com/monxvoll/Suppliers-Api-RESTful
